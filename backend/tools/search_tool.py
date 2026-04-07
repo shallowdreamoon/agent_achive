@@ -9,5 +9,5 @@ class SearchTool:
     def __init__(self, store: IPBenchStore):
         self.store = store
 
-    def run(self, query: str, task_filter: Optional[str] = None, k: int = 4) -> List[Dict]:
+    def run(self, query: str, task_filter: Optional[str], k: int) -> List[Dict]:
         return self.store.semantic_search(query=query, task_filter=task_filter, k=k)

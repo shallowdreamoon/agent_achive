@@ -2,34 +2,48 @@ import json
 from pathlib import Path
 from typing import Dict, List
 
+from backend.models.schemas import BenchmarkCase
 from backend.tools.evaluation_tool import EvaluationTool
 
 
 class BenchmarkRunner:
-    def __init__(self, evaluation_tool: EvaluationTool):
+    def __init__(self, router, evaluation_tool: EvaluationTool, dataset_path: Path):
+        self.router = router
         self.evaluation_tool = evaluation_tool
+        self.dataset_path = dataset_path
 
-    def build_demo_predictions(self) -> List[Dict]:
-        return [
-            {"task": "qa", "has_evidence": True, "reasoning_depth": 0.88},
-            {"task": "qa", "has_evidence": True, "reasoning_depth": 0.82},
-            {"task": "qa", "has_evidence": True, "reasoning_depth": 0.79},
-            {"task": "layout", "has_evidence": True, "reasoning_depth": 0.91},
-            {"task": "layout", "has_evidence": True, "reasoning_depth": 0.84},
-            {"task": "layout", "has_evidence": False, "reasoning_depth": 0.67},
-            {"task": "litigation", "has_evidence": True, "reasoning_depth": 0.90},
-            {"task": "litigation", "has_evidence": True, "reasoning_depth": 0.85},
-            {"task": "litigation", "has_evidence": True, "reasoning_depth": 0.81},
-        ]
+    def _load_cases(self) -> List[BenchmarkCase]:
+        payload = json.loads(self.dataset_path.read_text(encoding="utf-8"))
+        return [BenchmarkCase.model_validate(item) for item in payload]
 
-    def run(self, output_path: Path) -> Dict:
-        preds = self.build_demo_predictions()
-        overall = self.evaluation_tool.run(preds)
-        per_agent = {
-            task: self.evaluation_tool.run([x for x in preds if x["task"] == task])
-            for task in ["qa", "layout", "litigation"]
-        }
-        result = {**overall, "per_agent": per_agent}
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(json.dumps(result, indent=2), encoding="utf-8")
-        return result
+    def run(self, output_dir: Path) -> Dict:
+        cases = self._load_cases()
+        detail_rows = []
+        for case in cases:
+            agent_name = case.task_type
+            agent = self.router.dispatch(agent_name)
+            run = agent.run(query=case.input["query"], extra_params=case.input.get("extra_params", {}))
+            metrics = self.evaluation_tool.score_case(
+                output=run["structured_result"],
+                reference=case.reference,
+                expected_keywords=case.expected_keywords,
+                evidence=run["evidence"],
+            )
+            detail_rows.append(
+                {
+                    "id": case.id,
+                    "agent": agent_name,
+                    **metrics,
+                    "details": {
+                        "query": case.input["query"],
+                        "reference": case.reference,
+                        "structured_result": run["structured_result"],
+                    },
+                }
+            )
+
+        summary = self.evaluation_tool.summarize(detail_rows)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / "benchmark_results.json").write_text(json.dumps(detail_rows, ensure_ascii=False, indent=2), encoding="utf-8")
+        (output_dir / "benchmark_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+        return {"summary": summary, "detailed_results": detail_rows}

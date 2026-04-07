@@ -1,0 +1,5 @@
+[
+  {"id":"B-001","agent":"qa","overall_score":0.84,"evidence_hit":1.0,"keyword_match":0.6,"structured_valid":1.0,"details":{"note":"sample output placeholder"}},
+  {"id":"B-007","agent":"layout","overall_score":0.857,"evidence_hit":1.0,"keyword_match":0.64,"structured_valid":1.0,"details":{"note":"sample output placeholder"}},
+  {"id":"B-013","agent":"litigation","overall_score":0.847,"evidence_hit":1.0,"keyword_match":0.62,"structured_valid":1.0,"details":{"note":"sample output placeholder"}}
+]
