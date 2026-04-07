@@ -71,6 +71,8 @@ def run_agent(payload: RunRequest):
         evidence=run["evidence"],
         raw_model_output=run["raw_model_output"],
         latency_ms=run["latency_ms"],
+        mock_mode=settings.mock_mode,
+        model_name=settings.openai_model,
     )
 
 
