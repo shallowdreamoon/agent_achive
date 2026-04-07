@@ -10,6 +10,9 @@ class LLMClient:
     def __init__(self, settings: Settings):
         self.settings = settings
 
+    def llm_available(self) -> bool:
+        return bool(self.settings.openai_api_key)
+
     def chat_structured(
         self,
         system_prompt: str,
@@ -18,6 +21,9 @@ class LLMClient:
     ) -> Dict[str, Any]:
         if self.settings.mock_mode:
             return self._mock_response(schema_model)
+
+        if not self.llm_available():
+            raise RuntimeError("Real LLM mode requires OPENAI_API_KEY, but key is missing.")
 
         try:
             from openai import OpenAI
@@ -35,8 +41,8 @@ class LLMClient:
             )
             content = completion.choices[0].message.content or "{}"
             return schema_model.model_validate_json(content).model_dump()
-        except Exception:
-            return self._mock_response(schema_model)
+        except Exception as exc:
+            raise RuntimeError(f"Real LLM call failed: {exc}") from exc
 
     def embed_texts(self, texts: List[str]) -> List[List[float]]:
         if self.settings.mock_mode or not self.settings.enable_remote_embedding:

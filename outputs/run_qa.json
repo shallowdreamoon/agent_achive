@@ -20,7 +20,7 @@
       "country": "US",
       "title": "US trademark opposition",
       "snippet": "A Shenzhen electronics brand plans to sell smart speakers in the US under the mark EchoNova. A prior US registration EchoNova Labs exists in class 9.",
-      "score": 0.3482
+      "score": 0.4167
     },
     {
       "id": "IPB-004",
@@ -28,7 +28,15 @@
       "country": "US",
       "title": "Employee mobility leakage",
       "snippet": "US subsidiary hired competitors' engineers and imported source snippets from prior employer repositories.",
-      "score": 0.2425
+      "score": 0.2582
+    },
+    {
+      "id": "IPB-005",
+      "task": "qa",
+      "country": "IN",
+      "title": "Phonetic similarity in India",
+      "snippet": "A healthcare app named MediQ launches in India where Medique is registered for telemedicine services.",
+      "score": 0.1
     },
     {
       "id": "IPB-002",
@@ -36,14 +44,6 @@
       "country": "EU",
       "title": "FRAND and SEP risk in EU",
       "snippet": "A 5G IoT module exporter enters Germany and France without SEP licensing from major pools.",
-      "score": 0.0
-    },
-    {
-      "id": "IPB-003",
-      "task": "qa",
-      "country": "JP",
-      "title": "Software localization copyright",
-      "snippet": "A game studio outsourced Japanese translation and later reused text in another title without explicit assignment.",
       "score": 0.0
     }
   ],
@@ -60,6 +60,6 @@
     ]
   },
   "latency_ms": 0,
-  "mock_mode": false,
+  "mock_mode": true,
   "model_name": "gpt-4o-mini"
 }
