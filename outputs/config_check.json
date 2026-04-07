@@ -1,10 +1,5 @@
 {
   "mock_mode": true,
   "model": "mock-demo",
-  "llm_available": false,
-  "available_agents": [
-    "qa",
-    "layout",
-    "litigation"
-  ]
+  "llm_available": false
 }
