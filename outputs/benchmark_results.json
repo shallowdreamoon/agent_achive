@@ -1,5 +1,688 @@
 [
-  {"id":"B-001","agent":"qa","overall_score":0.84,"evidence_hit":1.0,"keyword_match":0.6,"structured_valid":1.0,"details":{"note":"sample output placeholder"}},
-  {"id":"B-007","agent":"layout","overall_score":0.857,"evidence_hit":1.0,"keyword_match":0.64,"structured_valid":1.0,"details":{"note":"sample output placeholder"}},
-  {"id":"B-013","agent":"litigation","overall_score":0.847,"evidence_hit":1.0,"keyword_match":0.62,"structured_valid":1.0,"details":{"note":"sample output placeholder"}}
+  {
+    "id": "B-001",
+    "agent": "qa",
+    "overall_score": 0.6,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.0,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "我们在美国推出EchoNova音箱，商标风险是什么？",
+      "reference": {
+        "question": "",
+        "risk_type": "",
+        "country_or_region": "",
+        "analysis": "",
+        "recommendations": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "question": "mock-question",
+        "risk_type": "mock-risk_type",
+        "country_or_region": "mock-country_or_region",
+        "analysis": "mock-analysis",
+        "recommendations": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-002",
+    "agent": "qa",
+    "overall_score": 0.7333,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.3333,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "在印度上线远程医疗App需要注意哪些知识产权问题？",
+      "reference": {
+        "question": "",
+        "risk_type": "",
+        "country_or_region": "",
+        "analysis": "",
+        "recommendations": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "question": "mock-question",
+        "risk_type": "mock-risk_type",
+        "country_or_region": "mock-country_or_region",
+        "analysis": "mock-analysis",
+        "recommendations": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-003",
+    "agent": "qa",
+    "overall_score": 0.6,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.0,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "进入阿联酋市场，阿拉伯语音译商标有冲突吗？",
+      "reference": {
+        "question": "",
+        "risk_type": "",
+        "country_or_region": "",
+        "analysis": "",
+        "recommendations": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "question": "mock-question",
+        "risk_type": "mock-risk_type",
+        "country_or_region": "mock-country_or_region",
+        "analysis": "mock-analysis",
+        "recommendations": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-004",
+    "agent": "qa",
+    "overall_score": 0.7333,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.3333,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "在欧盟卖可穿戴设备，外观设计侵权风险高吗？",
+      "reference": {
+        "question": "",
+        "risk_type": "",
+        "country_or_region": "",
+        "analysis": "",
+        "recommendations": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "question": "mock-question",
+        "risk_type": "mock-risk_type",
+        "country_or_region": "mock-country_or_region",
+        "analysis": "mock-analysis",
+        "recommendations": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-005",
+    "agent": "qa",
+    "overall_score": 0.6,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.0,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "巴西市场使用相似logo会触发什么风险？",
+      "reference": {
+        "question": "",
+        "risk_type": "",
+        "country_or_region": "",
+        "analysis": "",
+        "recommendations": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "question": "mock-question",
+        "risk_type": "mock-risk_type",
+        "country_or_region": "mock-country_or_region",
+        "analysis": "mock-analysis",
+        "recommendations": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-006",
+    "agent": "qa",
+    "overall_score": 0.6,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.0,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "日本电商平台上架前是否需要做专利侵权检索？",
+      "reference": {
+        "question": "",
+        "risk_type": "",
+        "country_or_region": "",
+        "analysis": "",
+        "recommendations": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "question": "mock-question",
+        "risk_type": "mock-risk_type",
+        "country_or_region": "mock-country_or_region",
+        "analysis": "mock-analysis",
+        "recommendations": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-007",
+    "agent": "layout",
+    "overall_score": 0.7333,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.3333,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "我们的电池管理算法将在美国和加拿大商用，如何规划专利布局？",
+      "reference": {
+        "technology_summary": "",
+        "target_regions": [],
+        "filing_strategy": [],
+        "timeline_suggestion": [],
+        "risk_notes": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "technology_summary": "mock-technology_summary",
+        "target_regions": [
+          "mock-item"
+        ],
+        "filing_strategy": [
+          "mock-item"
+        ],
+        "timeline_suggestion": [
+          "mock-item"
+        ],
+        "risk_notes": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-008",
+    "agent": "layout",
+    "overall_score": 0.6,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.0,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "机器人控制系统18个月后进入欧洲，申请节奏建议？",
+      "reference": {
+        "technology_summary": "",
+        "target_regions": [],
+        "filing_strategy": [],
+        "timeline_suggestion": [],
+        "risk_notes": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "technology_summary": "mock-technology_summary",
+        "target_regions": [
+          "mock-item"
+        ],
+        "filing_strategy": [
+          "mock-item"
+        ],
+        "timeline_suggestion": [
+          "mock-item"
+        ],
+        "risk_notes": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-009",
+    "agent": "layout",
+    "overall_score": 0.8667,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.6667,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "可穿戴设备外观想保护US/EU/JP，如何安排？",
+      "reference": {
+        "technology_summary": "",
+        "target_regions": [],
+        "filing_strategy": [],
+        "timeline_suggestion": [],
+        "risk_notes": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "technology_summary": "mock-technology_summary",
+        "target_regions": [
+          "mock-item"
+        ],
+        "filing_strategy": [
+          "mock-item"
+        ],
+        "timeline_suggestion": [
+          "mock-item"
+        ],
+        "risk_notes": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-010",
+    "agent": "layout",
+    "overall_score": 0.7333,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.3333,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "AI语音芯片准备出海东南亚，先申请哪些国家？",
+      "reference": {
+        "technology_summary": "",
+        "target_regions": [],
+        "filing_strategy": [],
+        "timeline_suggestion": [],
+        "risk_notes": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "technology_summary": "mock-technology_summary",
+        "target_regions": [
+          "mock-item"
+        ],
+        "filing_strategy": [
+          "mock-item"
+        ],
+        "timeline_suggestion": [
+          "mock-item"
+        ],
+        "risk_notes": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-011",
+    "agent": "layout",
+    "overall_score": 0.8667,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.6667,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "医疗器械软件准备北美上市，专利和商标布局怎么组合？",
+      "reference": {
+        "technology_summary": "",
+        "target_regions": [],
+        "filing_strategy": [],
+        "timeline_suggestion": [],
+        "risk_notes": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "technology_summary": "mock-technology_summary",
+        "target_regions": [
+          "mock-item"
+        ],
+        "filing_strategy": [
+          "mock-item"
+        ],
+        "timeline_suggestion": [
+          "mock-item"
+        ],
+        "risk_notes": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-012",
+    "agent": "layout",
+    "overall_score": 0.7333,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.3333,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "无人机导航算法要覆盖中东市场，布局建议是什么？",
+      "reference": {
+        "technology_summary": "",
+        "target_regions": [],
+        "filing_strategy": [],
+        "timeline_suggestion": [],
+        "risk_notes": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "technology_summary": "mock-technology_summary",
+        "target_regions": [
+          "mock-item"
+        ],
+        "filing_strategy": [
+          "mock-item"
+        ],
+        "timeline_suggestion": [
+          "mock-item"
+        ],
+        "risk_notes": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-013",
+    "agent": "litigation",
+    "overall_score": 0.7333,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.3333,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "收到美国NPE专利警告函，应诉路径是什么？",
+      "reference": {
+        "case_summary": "",
+        "potential_issues": [],
+        "litigation_risk": "",
+        "suggested_actions": [],
+        "legal_path_notes": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "case_summary": "mock-case_summary",
+        "potential_issues": [
+          "mock-item"
+        ],
+        "litigation_risk": "mock-litigation_risk",
+        "suggested_actions": [
+          "mock-item"
+        ],
+        "legal_path_notes": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-014",
+    "agent": "litigation",
+    "overall_score": 0.6,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.0,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "德国被诉传感器专利侵权，如何降低禁令风险？",
+      "reference": {
+        "case_summary": "",
+        "potential_issues": [],
+        "litigation_risk": "",
+        "suggested_actions": [],
+        "legal_path_notes": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "case_summary": "mock-case_summary",
+        "potential_issues": [
+          "mock-item"
+        ],
+        "litigation_risk": "mock-litigation_risk",
+        "suggested_actions": [
+          "mock-item"
+        ],
+        "legal_path_notes": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-015",
+    "agent": "litigation",
+    "overall_score": 0.7333,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.3333,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "法国海关扣押平行进口货物，如何应对？",
+      "reference": {
+        "case_summary": "",
+        "potential_issues": [],
+        "litigation_risk": "",
+        "suggested_actions": [],
+        "legal_path_notes": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "case_summary": "mock-case_summary",
+        "potential_issues": [
+          "mock-item"
+        ],
+        "litigation_risk": "mock-litigation_risk",
+        "suggested_actions": [
+          "mock-item"
+        ],
+        "legal_path_notes": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-016",
+    "agent": "litigation",
+    "overall_score": 0.7333,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.3333,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "英国竞争对手发起外观侵权诉讼，先做什么？",
+      "reference": {
+        "case_summary": "",
+        "potential_issues": [],
+        "litigation_risk": "",
+        "suggested_actions": [],
+        "legal_path_notes": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "case_summary": "mock-case_summary",
+        "potential_issues": [
+          "mock-item"
+        ],
+        "litigation_risk": "mock-litigation_risk",
+        "suggested_actions": [
+          "mock-item"
+        ],
+        "legal_path_notes": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-017",
+    "agent": "litigation",
+    "overall_score": 0.7333,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.3333,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "加拿大收到临时禁令申请通知，如何准备应对？",
+      "reference": {
+        "case_summary": "",
+        "potential_issues": [],
+        "litigation_risk": "",
+        "suggested_actions": [],
+        "legal_path_notes": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "case_summary": "mock-case_summary",
+        "potential_issues": [
+          "mock-item"
+        ],
+        "litigation_risk": "mock-litigation_risk",
+        "suggested_actions": [
+          "mock-item"
+        ],
+        "legal_path_notes": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-018",
+    "agent": "qa",
+    "overall_score": 0.6,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.0,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "韩国销售智能门锁时，品牌和专利冲突如何预判？",
+      "reference": {
+        "question": "",
+        "risk_type": "",
+        "country_or_region": "",
+        "analysis": "",
+        "recommendations": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "question": "mock-question",
+        "risk_type": "mock-risk_type",
+        "country_or_region": "mock-country_or_region",
+        "analysis": "mock-analysis",
+        "recommendations": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-019",
+    "agent": "layout",
+    "overall_score": 0.7333,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.3333,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "云端工业软件要在拉美扩展，IP布局优先级怎么排？",
+      "reference": {
+        "technology_summary": "",
+        "target_regions": [],
+        "filing_strategy": [],
+        "timeline_suggestion": [],
+        "risk_notes": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "technology_summary": "mock-technology_summary",
+        "target_regions": [
+          "mock-item"
+        ],
+        "filing_strategy": [
+          "mock-item"
+        ],
+        "timeline_suggestion": [
+          "mock-item"
+        ],
+        "risk_notes": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  },
+  {
+    "id": "B-020",
+    "agent": "litigation",
+    "overall_score": 0.7333,
+    "evidence_hit": 1.0,
+    "keyword_match": 0.3333,
+    "structured_valid": 1.0,
+    "details": {
+      "query": "在新加坡遭遇商标异议及后续诉讼风险，怎么处理？",
+      "reference": {
+        "case_summary": "",
+        "potential_issues": [],
+        "litigation_risk": "",
+        "suggested_actions": [],
+        "legal_path_notes": [],
+        "evidence": []
+      },
+      "structured_result": {
+        "case_summary": "mock-case_summary",
+        "potential_issues": [
+          "mock-item"
+        ],
+        "litigation_risk": "mock-litigation_risk",
+        "suggested_actions": [
+          "mock-item"
+        ],
+        "legal_path_notes": [
+          "mock-item"
+        ],
+        "evidence": [
+          "mock-item"
+        ]
+      }
+    }
+  }
 ]

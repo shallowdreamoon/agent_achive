@@ -2,11 +2,11 @@
   "task_coverage": 1.0,
   "evidence_hit_rate": 1.0,
   "structured_output_validity": 1.0,
-  "keyword_match_score": 0.62,
-  "average_overall_score": 0.848,
+  "keyword_match_score": 0.25,
+  "average_overall_score": 0.7,
   "per_agent_score": {
-    "qa": 0.84,
-    "layout": 0.857,
-    "litigation": 0.847
+    "qa": 0.6381,
+    "layout": 0.7524,
+    "litigation": 0.7111
   }
 }

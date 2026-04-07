@@ -1,0 +1,77 @@
+{
+  "selected_agent": "layout",
+  "routing_reason": "manual agent_type specified by user",
+  "structured_result": {
+    "technology_summary": "mock-technology_summary",
+    "target_regions": [
+      "mock-item"
+    ],
+    "filing_strategy": [
+      "mock-item"
+    ],
+    "timeline_suggestion": [
+      "mock-item"
+    ],
+    "risk_notes": [
+      "mock-item"
+    ],
+    "evidence": [
+      "mock-item"
+    ]
+  },
+  "evidence": [
+    {
+      "id": "IPB-006",
+      "task": "layout",
+      "country": "US",
+      "title": "Battery management patent family",
+      "snippet": "Company has core BMS algorithm and plans expansion to US and Canada.",
+      "score": 0.0
+    },
+    {
+      "id": "IPB-007",
+      "task": "layout",
+      "country": "EU",
+      "title": "Robotics control portfolio",
+      "snippet": "SME develops collision-avoidance stack and wants Europe market entry in 18 months.",
+      "score": 0.0
+    },
+    {
+      "id": "IPB-008",
+      "task": "layout",
+      "country": "JP",
+      "title": "Medical imaging AI",
+      "snippet": "AI startup seeks Japan hospital procurement opportunities.",
+      "score": 0.0
+    },
+    {
+      "id": "IPB-009",
+      "task": "layout",
+      "country": "KR",
+      "title": "Semiconductor packaging",
+      "snippet": "Advanced packaging process needs rapid filing before trade fair disclosure.",
+      "score": 0.0
+    }
+  ],
+  "raw_model_output": {
+    "technology_summary": "mock-technology_summary",
+    "target_regions": [
+      "mock-item"
+    ],
+    "filing_strategy": [
+      "mock-item"
+    ],
+    "timeline_suggestion": [
+      "mock-item"
+    ],
+    "risk_notes": [
+      "mock-item"
+    ],
+    "evidence": [
+      "mock-item"
+    ]
+  },
+  "latency_ms": 0,
+  "mock_mode": false,
+  "model_name": "gpt-4o-mini"
+}

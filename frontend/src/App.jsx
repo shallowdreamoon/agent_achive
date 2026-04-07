@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import AgentPanel from './components/AgentPanel'
 import EvalPanel from './components/EvalPanel'
 
@@ -17,9 +17,29 @@ export default function App() {
   const [topK, setTopK] = useState(4)
   const [result, setResult] = useState(null)
   const [benchmark, setBenchmark] = useState(null)
+  const [config, setConfig] = useState(null)
   const [loadingRun, setLoadingRun] = useState(false)
   const [loadingBench, setLoadingBench] = useState(false)
+  const [loadingConfig, setLoadingConfig] = useState(false)
   const [error, setError] = useState('')
+
+  const loadConfig = async () => {
+    setLoadingConfig(true)
+    setError('')
+    try {
+      const res = await fetch(`${API}/api/config`)
+      if (!res.ok) throw new Error(await res.text())
+      setConfig(await res.json())
+    } catch (e) {
+      setError(`加载配置失败: ${String(e)}`)
+    } finally {
+      setLoadingConfig(false)
+    }
+  }
+
+  useEffect(() => {
+    loadConfig()
+  }, [])
 
   const runAgent = async () => {
     setLoadingRun(true)
@@ -38,7 +58,7 @@ export default function App() {
       if (!res.ok) throw new Error(await res.text())
       setResult(await res.json())
     } catch (e) {
-      setError(String(e))
+      setError(`运行失败: ${String(e)}`)
     } finally {
       setLoadingRun(false)
     }
@@ -52,7 +72,7 @@ export default function App() {
       if (!res.ok) throw new Error(await res.text())
       setBenchmark(await res.json())
     } catch (e) {
-      setError(String(e))
+      setError(`Benchmark 失败: ${String(e)}`)
     } finally {
       setLoadingBench(false)
     }
@@ -69,6 +89,14 @@ export default function App() {
         <header className="rounded-2xl bg-white p-6 shadow">
           <h1 className="text-2xl font-bold">企业出海知识产权风险多智能体系统</h1>
           <p className="mt-2 text-sm text-slate-600">支持三类 agent、自动路由、证据检索、结构化推理和 benchmark 评估。</p>
+          <div className="mt-3 rounded bg-slate-50 p-3 text-xs text-slate-700">
+            {loadingConfig && <p>配置加载中...</p>}
+            {!loadingConfig && config && (
+              <p>
+                mock_mode={String(config.mock_mode)} | model_name={config.model_name} | embedding_model={config.embedding_model} | available_agents={config.available_agents.join(', ')} | default_top_k={config.default_top_k}
+              </p>
+            )}
+          </div>
         </header>
 
         {error && <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-red-700">{error}</div>}

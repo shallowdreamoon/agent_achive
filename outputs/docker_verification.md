@@ -1,23 +1,27 @@
 # Docker Verification (2026-04-07 UTC)
 
-执行命令：
-```bash
-docker compose up --build
-```
+## 是否真实执行过 `docker compose up --build`
+- 已执行：`docker compose up --build`
 
-## 结果
-- compose 是否能启动：**否**
-- 原因：当前执行环境不存在 `docker` 命令（`/bin/bash: docker: command not found`）
-- backend 8000 监听：**无法验证（受上述限制）**
-- frontend 5173 监听：**无法验证（受上述限制）**
+## 是否成功
+- **失败**
 
-## .env 要求
-- 已新增 `.env.example`，默认可离线演示：
-  - `MOCK_MODE=true`
-  - `ENABLE_REMOTE_EMBEDDING=false`
-- Real LLM 模式：
-  - `MOCK_MODE=false`
-  - 配置 `OPENAI_API_KEY`、`OPENAI_BASE_URL`、`OPENAI_MODEL`
+## 失败点
+- 当前环境缺少 Docker CLI：`docker: command not found`
+- 因此无法在本环境验证容器内 backend/frontend 监听端口。
 
-## 无 API Key 的 demo 启动方式
-- 使用 mock 模式（`.env` 复制 `.env.example` 即可）
+## mock 模式怎么启动
+1. `cp .env.example .env`
+2. 保持 `.env` 中：
+   - `MOCK_MODE=true`
+   - `ENABLE_REMOTE_EMBEDDING=false`
+3. 执行：`docker compose up --build`
+
+## real LLM 模式怎么启动
+1. `cp .env.example .env`
+2. 修改 `.env`：
+   - `MOCK_MODE=false`
+   - `OPENAI_API_KEY=<your-key>`
+   - `OPENAI_BASE_URL=<compatible-base-url>`（可保留默认）
+   - `OPENAI_MODEL=<model-name>`
+3. 执行：`docker compose up --build`

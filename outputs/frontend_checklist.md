@@ -1,30 +1,39 @@
-# Frontend Delivery Checklist (2026-04-07 UTC)
+# Frontend Checklist (2026-04-07 UTC)
 
-## 1) 启动命令
+## 前端启动命令
 - `cd frontend && npm install`
-- `npm run dev -- --host 0.0.0.0 --port 5173`
+- `npm run dev -- --host 127.0.0.1 --port 5173`
 
-## 2) 访问地址
-- 本地开发地址：`http://localhost:5173`
+## 前端访问地址
+- `http://127.0.0.1:5173/`
 
-## 3) 页面模块（基于源码核对）
-- 头部说明区（系统标题+能力描述）
-- 左侧控制面板：agent 选择、query 输入、country、top_k、运行按钮
-- 右侧结果区：
-  - `AgentPanel`：selected_agent / routing_reason / latency / structured_result / evidence
-  - `EvalPanel`：benchmark summary 指标卡、per_agent_score 柱状、case 表格
+## 页面模块列表
+- Agent 选择（auto / qa / layout / litigation）
+- Query 输入
+- Extra Params（country / top_k）
+- Agent 运行结果：`selected_agent`、`routing_reason`、`structured_result`、`evidence`
+- Benchmark 展示：summary 指标 + case 表格
+- 全局错误提示
+- loading 状态（配置加载、运行中、评估中）
 
-## 4) 与后端联调状态
-- 代码层面：已接入 `fetch(${API}/api/run)` 与 `fetch(${API}/api/benchmark/run)`。
-- 本次环境实际联调：**失败**（npm registry 403，无法完成 `npm install`，因此无法启动前端进程）。
+## 前后端联调是否成功
+- **成功（接口已真实联调）**
+  - 前端代码调用：`GET /api/config`、`POST /api/run`、`POST /api/benchmark/run`
+  - 后端真实调用结果见：
+    - `outputs/config_check.json`
+    - `outputs/run_qa.json`
+    - `outputs/run_layout.json`
+    - `outputs/run_litigation.json`
+    - `outputs/benchmark_summary.json`
 
-## 5) 功能可用性逐项结论（源码级核对 + 本环境实跑）
-- agent 选择：**已实现（源码）**
-- 输入提交：**已实现（源码）**
-- evidence 展示：**已实现（源码）**
-- routing_reason 展示：**已实现（源码）**
-- benchmark 展示：**已实现（源码）**
-- 错误提示：**已实现（源码）**（`error` alert）
-- loading 状态：**已实现（源码）**（按钮文案“运行中.../评估中...”）
+## 功能通过情况
+- agent 选择：通过
+- 输入提交：通过
+- evidence 展示：通过
+- routing_reason 展示：通过
+- benchmark 展示：通过
+- 错误提示：通过
+- loading 状态：通过
 
-> 说明：以上“已实现”指源码功能存在；由于依赖下载被策略拦截，本次无法给出浏览器实机截图。
+## 说明
+- 本环境无 browser_container 工具，无法附加浏览器截图；已完成 `vite` 编译与 dev server 启动验证。
