@@ -20,23 +20,7 @@
       "country": "US",
       "title": "US trademark opposition",
       "snippet": "A Shenzhen electronics brand plans to sell smart speakers in the US under the mark EchoNova. A prior US registration EchoNova Labs exists in class 9.",
-      "score": 0.0
-    },
-    {
-      "id": "IPB-002",
-      "task": "qa",
-      "country": "EU",
-      "title": "FRAND and SEP risk in EU",
-      "snippet": "A 5G IoT module exporter enters Germany and France without SEP licensing from major pools.",
-      "score": 0.0
-    },
-    {
-      "id": "IPB-003",
-      "task": "qa",
-      "country": "JP",
-      "title": "Software localization copyright",
-      "snippet": "A game studio outsourced Japanese translation and later reused text in another title without explicit assignment.",
-      "score": 0.0
+      "score": 0.2462
     },
     {
       "id": "IPB-004",
@@ -44,6 +28,22 @@
       "country": "US",
       "title": "Employee mobility leakage",
       "snippet": "US subsidiary hired competitors' engineers and imported source snippets from prior employer repositories.",
+      "score": 0.1768
+    },
+    {
+      "id": "IPB-002",
+      "task": "qa",
+      "country": "EU",
+      "title": "FRAND and SEP risk in EU",
+      "snippet": "A 5G IoT module exporter enters Germany and France without SEP licensing from major pools.",
+      "score": 0.1348
+    },
+    {
+      "id": "IPB-003",
+      "task": "qa",
+      "country": "JP",
+      "title": "Software localization copyright",
+      "snippet": "A game studio outsourced Japanese translation and later reused text in another title without explicit assignment.",
       "score": 0.0
     }
   ],

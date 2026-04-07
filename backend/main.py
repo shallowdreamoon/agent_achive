@@ -54,7 +54,7 @@ def config():
         mock_mode=settings.mock_mode,
         model=settings.openai_model,
         llm_available=llm_client.llm_available(),
-        available_agents=settings.available_agents,
+        available_agents=["qa", "layout", "litigation"],
     )
 
 
