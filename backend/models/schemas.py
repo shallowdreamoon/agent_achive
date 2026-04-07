@@ -28,6 +28,8 @@ class RunResponse(BaseModel):
     evidence: List[EvidenceItem]
     raw_model_output: Optional[Dict[str, Any]] = None
     latency_ms: int
+    mock_mode: bool
+    model_name: str
 
 
 class BenchmarkCase(BaseModel):

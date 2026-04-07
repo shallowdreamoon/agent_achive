@@ -41,19 +41,19 @@
 
 ## 环境变量
 
-后端（默认 real LLM mode，若失败会自动降级；可显式 mock）：
+后端（建议默认 mock 演示；可切换 real LLM）：
 
 ```bash
 OPENAI_API_KEY=sk-xxx
 OPENAI_BASE_URL=https://api.openai.com/v1
 OPENAI_MODEL=gpt-4o-mini
 EMBEDDING_MODEL=text-embedding-3-small
-MOCK_MODE=false
-ENABLE_REMOTE_EMBEDDING=true
+MOCK_MODE=true
+ENABLE_REMOTE_EMBEDDING=false
 DEFAULT_TOP_K=4
 ```
 
-> `MOCK_MODE=true` 时将强制使用 mock 输出，便于离线演示。
+> `MOCK_MODE=true` 时将强制使用 mock 输出，便于离线演示；`MOCK_MODE=false` 时尝试调用 OpenAI 兼容接口。
 
 ## 本地启动
 
@@ -105,6 +105,8 @@ docker compose up --build
 - `evidence`
 - `raw_model_output`
 - `latency_ms`
+- `mock_mode`
+- `model_name`
 
 ### `POST /api/benchmark/run`
 运行完整 benchmark，返回：
@@ -170,3 +172,25 @@ python scripts/generate_artifacts.py
   }
 }
 ```
+
+
+## 一键交付验证
+
+```bash
+python scripts/verify_delivery.py --start-backend
+```
+
+该脚本会自动调用：
+- `GET /api/health`
+- `GET /api/config`
+- `POST /api/run`（qa/layout/litigation 各一次）
+- `POST /api/benchmark/run`
+
+并写入 `outputs/`：
+- `health_check.json`
+- `config_check.json`
+- `run_qa.json`
+- `run_layout.json`
+- `run_litigation.json`
+- `benchmark_results.json`
+- `benchmark_summary.json`
