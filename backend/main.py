@@ -10,7 +10,7 @@ from backend.core.config import get_settings
 from backend.core.llm import LLMClient
 from backend.data.vector_store import IPBenchStore
 from backend.evaluation.benchmark import BenchmarkRunner
-from backend.models.schemas import BenchmarkResponse, ConfigResponse, RunRequest, RunResponse
+from backend.models.schemas import BenchmarkResponse, RunRequest, RunResponse
 from backend.router.agent_router import AgentRouter
 from backend.tools.evaluation_tool import EvaluationTool
 from backend.tools.reasoning_tool import ReasoningTool
@@ -48,13 +48,14 @@ def health():
     return {"status": "ok"}
 
 
-@app.get("/api/config", response_model=ConfigResponse)
+@app.get("/api/config")
 def config():
-    return ConfigResponse(
-        mock_mode=settings.mock_mode,
-        model=settings.openai_model,
-        llm_available=llm_client.llm_available(),
-    )
+    return {
+        "mock_mode": settings.mock_mode,
+        "model": settings.openai_model,
+        "llm_available": llm_client.llm_available(),
+        "available_agents": ["qa", "layout", "litigation"],
+    }
 
 
 @app.post("/api/run", response_model=RunResponse)
