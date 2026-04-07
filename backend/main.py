@@ -51,10 +51,10 @@ def health():
 @app.get("/api/config", response_model=ConfigResponse)
 def config():
     return ConfigResponse(
-        mock_mode=True,
-        model="mock-demo",
-        llm_available=False,
-        available_agents=["qa", "layout", "litigation"],
+        mock_mode=settings.mock_mode,
+        model=settings.openai_model,
+        llm_available=llm_client.llm_available(),
+        available_agents=settings.available_agents,
     )
 
 
