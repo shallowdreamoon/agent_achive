@@ -45,17 +45,16 @@ app.add_middleware(
 
 @app.get("/api/health")
 def health():
-    return {"ok": True, "service": settings.app_name}
+    return {"status": "ok"}
 
 
 @app.get("/api/config", response_model=ConfigResponse)
 def config():
     return ConfigResponse(
-        mock_mode=settings.mock_mode,
-        model_name=settings.openai_model,
-        embedding_model=settings.embedding_model,
-        available_agents=settings.available_agents,
-        default_top_k=settings.default_top_k,
+        mock_mode=True,
+        model="mock-demo",
+        llm_available=False,
+        available_agents=["qa", "layout", "litigation"],
     )
 
 
@@ -66,13 +65,12 @@ def run_agent(payload: RunRequest):
     run = agent.run(query=payload.query, extra_params=payload.extra_params)
     return RunResponse(
         selected_agent=selected_agent,
-        routing_reason=reason,
+        routing_reason="manual selection" if payload.agent_type else reason,
         structured_result=run["structured_result"],
         evidence=run["evidence"],
         raw_model_output=run["raw_model_output"],
         latency_ms=run["latency_ms"],
-        mock_mode=settings.mock_mode,
-        model_name=settings.openai_model,
+        mock_mode=True,
     )
 
 

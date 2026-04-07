@@ -29,7 +29,6 @@ class RunResponse(BaseModel):
     raw_model_output: Optional[Dict[str, Any]] = None
     latency_ms: int
     mock_mode: bool
-    model_name: str
 
 
 class BenchmarkCase(BaseModel):
@@ -40,33 +39,20 @@ class BenchmarkCase(BaseModel):
     expected_keywords: List[str]
 
 
-class CaseScore(BaseModel):
-    id: str
-    agent: AgentType
-    overall_score: float
-    evidence_hit: float
-    keyword_match: float
-    structured_valid: float
-    details: Dict[str, Any]
-
-
 class BenchmarkSummary(BaseModel):
+    average_score: float
     task_coverage: float
     evidence_hit_rate: float
     structured_output_validity: float
-    keyword_match_score: float
-    average_overall_score: float
-    per_agent_score: Dict[str, float]
 
 
 class BenchmarkResponse(BaseModel):
     summary: BenchmarkSummary
-    detailed_results: List[CaseScore]
+    details: List[Dict[str, Any]]
 
 
 class ConfigResponse(BaseModel):
     mock_mode: bool
-    model_name: str
-    embedding_model: str
+    model: str
+    llm_available: bool
     available_agents: List[AgentType]
-    default_top_k: int

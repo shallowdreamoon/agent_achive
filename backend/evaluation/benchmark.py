@@ -34,16 +34,18 @@ class BenchmarkRunner:
                     "id": case.id,
                     "agent": agent_name,
                     **metrics,
-                    "details": {
-                        "query": case.input["query"],
-                        "reference": case.reference,
-                        "structured_result": run["structured_result"],
-                    },
                 }
             )
 
-        summary = self.evaluation_tool.summarize(detail_rows)
+        src_summary = self.evaluation_tool.summarize(detail_rows)
+        summary = {
+            "average_score": src_summary["average_overall_score"],
+            "task_coverage": src_summary["task_coverage"],
+            "evidence_hit_rate": src_summary["evidence_hit_rate"],
+            "structured_output_validity": src_summary["structured_output_validity"],
+        }
+
         output_dir.mkdir(parents=True, exist_ok=True)
         (output_dir / "benchmark_results.json").write_text(json.dumps(detail_rows, ensure_ascii=False, indent=2), encoding="utf-8")
         (output_dir / "benchmark_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
-        return {"summary": summary, "detailed_results": detail_rows}
+        return {"summary": summary, "details": detail_rows}

@@ -1,11 +1,10 @@
 {
-  "mock_mode": false,
-  "model_name": "gpt-4o-mini",
-  "embedding_model": "text-embedding-3-small",
+  "mock_mode": true,
+  "model": "mock-demo",
+  "llm_available": false,
   "available_agents": [
     "qa",
     "layout",
     "litigation"
-  ],
-  "default_top_k": 4
+  ]
 }

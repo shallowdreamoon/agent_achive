@@ -1,134 +1,86 @@
-import { useEffect, useMemo, useState } from 'react'
-import AgentPanel from './components/AgentPanel'
-import EvalPanel from './components/EvalPanel'
+import { useState } from 'react'
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
-
-const examples = {
-  qa: '我们在美国销售智能音箱，商标是否会侵权？',
-  layout: '电池管理算法进入美国和加拿大，如何做专利布局？',
-  litigation: '收到美国NPE专利警告函，应诉路径是什么？',
-}
+const API_BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
 
 export default function App() {
-  const [agentType, setAgentType] = useState('auto')
-  const [query, setQuery] = useState(examples.qa)
-  const [country, setCountry] = useState('US')
-  const [topK, setTopK] = useState(4)
-  const [result, setResult] = useState(null)
-  const [benchmark, setBenchmark] = useState(null)
-  const [config, setConfig] = useState(null)
-  const [loadingRun, setLoadingRun] = useState(false)
-  const [loadingBench, setLoadingBench] = useState(false)
-  const [loadingConfig, setLoadingConfig] = useState(false)
+  const [agentType, setAgentType] = useState('qa')
+  const [query, setQuery] = useState('我们在美国推出EchoNova音箱，商标风险是什么？')
+  const [runResult, setRunResult] = useState(null)
+  const [benchmarkResult, setBenchmarkResult] = useState(null)
   const [error, setError] = useState('')
 
-  const loadConfig = async () => {
-    setLoadingConfig(true)
+  const handleRun = async () => {
     setError('')
     try {
-      const res = await fetch(`${API}/api/config`)
-      if (!res.ok) throw new Error(await res.text())
-      setConfig(await res.json())
-    } catch (e) {
-      setError(`加载配置失败: ${String(e)}`)
-    } finally {
-      setLoadingConfig(false)
-    }
-  }
-
-  useEffect(() => {
-    loadConfig()
-  }, [])
-
-  const runAgent = async () => {
-    setLoadingRun(true)
-    setError('')
-    try {
-      const payload = {
-        query,
-        agent_type: agentType === 'auto' ? null : agentType,
-        extra_params: { country, top_k: Number(topK) },
-      }
-      const res = await fetch(`${API}/api/run`, {
+      const resp = await fetch(`${API_BASE}/api/run`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ query, agent_type: agentType }),
       })
-      if (!res.ok) throw new Error(await res.text())
-      setResult(await res.json())
+      if (!resp.ok) throw new Error(await resp.text())
+      setRunResult(await resp.json())
     } catch (e) {
-      setError(`运行失败: ${String(e)}`)
-    } finally {
-      setLoadingRun(false)
+      setError(String(e))
     }
   }
 
-  const runBenchmark = async () => {
-    setLoadingBench(true)
+  const handleBenchmark = async () => {
     setError('')
     try {
-      const res = await fetch(`${API}/api/benchmark/run`, { method: 'POST' })
-      if (!res.ok) throw new Error(await res.text())
-      setBenchmark(await res.json())
+      const resp = await fetch(`${API_BASE}/api/benchmark/run`, { method: 'POST' })
+      if (!resp.ok) throw new Error(await resp.text())
+      setBenchmarkResult(await resp.json())
     } catch (e) {
-      setError(`Benchmark 失败: ${String(e)}`)
-    } finally {
-      setLoadingBench(false)
+      setError(String(e))
     }
   }
 
-  const selectedExample = useMemo(() => {
-    if (agentType === 'auto') return examples.qa
-    return examples[agentType]
-  }, [agentType])
-
   return (
-    <main className="min-h-screen bg-slate-100 p-6 text-slate-900">
-      <div className="mx-auto max-w-7xl space-y-4">
-        <header className="rounded-2xl bg-white p-6 shadow">
-          <h1 className="text-2xl font-bold">企业出海知识产权风险多智能体系统</h1>
-          <p className="mt-2 text-sm text-slate-600">支持三类 agent、自动路由、证据检索、结构化推理和 benchmark 评估。</p>
-          <div className="mt-3 rounded bg-slate-50 p-3 text-xs text-slate-700">
-            {loadingConfig && <p>配置加载中...</p>}
-            {!loadingConfig && config && (
-              <p>
-                mock_mode={String(config.mock_mode)} | model_name={config.model_name} | embedding_model={config.embedding_model} | available_agents={config.available_agents.join(', ')} | default_top_k={config.default_top_k}
-              </p>
-            )}
-          </div>
-        </header>
+    <div style={{ padding: 20, fontFamily: 'Arial, sans-serif', maxWidth: 960 }}>
+      <h1>Multi-Agent Mock Demo</h1>
 
-        {error && <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-red-700">{error}</div>}
-
-        <div className="grid gap-4 lg:grid-cols-3">
-          <section className="rounded-2xl bg-white p-4 shadow lg:col-span-1">
-            <label className="mb-1 block text-sm font-semibold">Agent 模式</label>
-            <select className="mb-3 w-full rounded border p-2" value={agentType} onChange={(e) => setAgentType(e.target.value)}>
-              <option value="auto">自动路由</option>
-              <option value="qa">IP Risk QA Agent</option>
-              <option value="layout">IP Layout Planning Agent</option>
-              <option value="litigation">IP Litigation Analysis Agent</option>
-            </select>
-            <label className="mb-1 block text-sm font-semibold">输入问题</label>
-            <textarea className="mb-3 h-36 w-full rounded border p-2" value={query} onChange={(e) => setQuery(e.target.value)} />
-            <button className="mb-3 text-xs text-indigo-600 underline" onClick={() => setQuery(selectedExample)}>填充示例</button>
-            <label className="mb-1 block text-sm font-semibold">目标国家/地区</label>
-            <input className="mb-3 w-full rounded border p-2" value={country} onChange={(e) => setCountry(e.target.value)} />
-            <label className="mb-1 block text-sm font-semibold">Top-K 证据</label>
-            <input className="mb-3 w-full rounded border p-2" type="number" min="1" max="8" value={topK} onChange={(e) => setTopK(e.target.value)} />
-            <div className="flex gap-2">
-              <button onClick={runAgent} disabled={loadingRun} className="rounded bg-indigo-600 px-3 py-2 text-white disabled:opacity-40">{loadingRun ? '运行中...' : '运行 Agent'}</button>
-              <button onClick={runBenchmark} disabled={loadingBench} className="rounded bg-emerald-600 px-3 py-2 text-white disabled:opacity-40">{loadingBench ? '评估中...' : '运行 Benchmark'}</button>
-            </div>
-          </section>
-
-          <div className="space-y-4 lg:col-span-2">
-            <AgentPanel result={result} />
-            <EvalPanel benchmark={benchmark} />
-          </div>
-        </div>
+      <div style={{ marginBottom: 12 }}>
+        <div>Agent</div>
+        <select value={agentType} onChange={(e) => setAgentType(e.target.value)}>
+          <option value="qa">qa</option>
+          <option value="layout">layout</option>
+          <option value="litigation">litigation</option>
+        </select>
       </div>
-    </main>
+
+      <div style={{ marginBottom: 12 }}>
+        <div>Query</div>
+        <textarea rows={4} style={{ width: '100%' }} value={query} onChange={(e) => setQuery(e.target.value)} />
+      </div>
+
+      <div style={{ marginBottom: 12 }}>
+        <button onClick={handleRun}>Run</button>
+        <button onClick={handleBenchmark} style={{ marginLeft: 8 }}>Benchmark</button>
+      </div>
+
+      {error && <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>}
+
+      {runResult && (
+        <div style={{ border: '1px solid #ccc', padding: 12, marginBottom: 12 }}>
+          <div><b>selected_agent:</b> {runResult.selected_agent}</div>
+          <div><b>routing_reason:</b> {runResult.routing_reason}</div>
+          <div><b>structured_result:</b></div>
+          <pre>{JSON.stringify(runResult.structured_result, null, 2)}</pre>
+          <div><b>evidence:</b></div>
+          <ul>
+            {(runResult.evidence || []).map((item) => (
+              <li key={item.id}>{item.id} - {item.title}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {benchmarkResult && (
+        <div style={{ border: '1px solid #ccc', padding: 12 }}>
+          <div><b>benchmark summary:</b></div>
+          <pre>{JSON.stringify(benchmarkResult.summary, null, 2)}</pre>
+        </div>
+      )}
+    </div>
   )
 }

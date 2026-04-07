@@ -9,10 +9,10 @@ class Settings(BaseModel):
     app_name: str = "IP Overseas Risk Multi-Agent Demo"
     openai_api_key: str = Field(default="")
     openai_base_url: str = Field(default="https://api.openai.com/v1")
-    openai_model: str = Field(default="gpt-4o-mini")
+    openai_model: str = Field(default="mock-demo")
     embedding_model: str = Field(default="text-embedding-3-small")
     llm_timeout_seconds: int = Field(default=45)
-    mock_mode: bool = Field(default=False)
+    mock_mode: bool = Field(default=True)
     enable_remote_embedding: bool = Field(default=True)
     default_top_k: int = Field(default=4)
 
@@ -32,10 +32,10 @@ def get_settings() -> Settings:
         app_name=os.getenv("APP_NAME", "IP Overseas Risk Multi-Agent Demo"),
         openai_api_key=os.getenv("OPENAI_API_KEY", ""),
         openai_base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"),
-        openai_model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+        openai_model=os.getenv("OPENAI_MODEL", "mock-demo"),
         embedding_model=os.getenv("EMBEDDING_MODEL", "text-embedding-3-small"),
         llm_timeout_seconds=int(os.getenv("LLM_TIMEOUT_SECONDS", "45")),
-        mock_mode=_parse_bool(os.getenv("MOCK_MODE"), False),
+        mock_mode=_parse_bool(os.getenv("MOCK_MODE"), True),
         enable_remote_embedding=_parse_bool(os.getenv("ENABLE_REMOTE_EMBEDDING"), True),
         default_top_k=int(os.getenv("DEFAULT_TOP_K", "4")),
         cors_origins=os.getenv("CORS_ORIGINS", "*"),

@@ -68,7 +68,7 @@ def main() -> int:
                     stderr=logf,
                 )
             if not wait_backend_ready(BASE_URL, timeout_seconds=45):
-                raise VerifyError("check_backend failed: backend not reachable after auto-start")
+                raise VerifyError("backend not reachable after auto-start")
 
         health = request_json("GET", f"{BASE_URL}/api/health")
         write_json("health_check.json", health)
@@ -79,10 +79,12 @@ def main() -> int:
         run_payload = {
             "query": "我们在美国推出EchoNova音箱，商标风险是什么？",
             "agent_type": "qa",
-            "extra_params": {"country": "US", "top_k": 4},
         }
         run_qa = request_json("POST", f"{BASE_URL}/api/run", run_payload, timeout=60)
         write_json("run_qa.json", run_qa)
+
+        benchmark = request_json("POST", f"{BASE_URL}/api/benchmark/run", timeout=60)
+        write_json("benchmark_summary.json", benchmark.get("summary", {}))
 
         print("PASS")
         return 0
