@@ -1,28 +1,71 @@
-from typing import Dict, List
+import json
+from typing import Dict, List, Literal, Tuple, Type
+
+from pydantic import BaseModel, Field
+
+from backend.core.llm import LLMClient
+
+
+class QASchema(BaseModel):
+    question: str
+    risk_type: str
+    country_or_region: str
+    analysis: str
+    recommendations: List[str]
+    evidence: List[str]
+
+
+class LayoutSchema(BaseModel):
+    technology_summary: str
+    target_regions: List[str]
+    filing_strategy: List[str]
+    timeline_suggestion: List[str]
+    risk_notes: List[str]
+    evidence: List[str]
+
+
+class LitigationSchema(BaseModel):
+    case_summary: str
+    potential_issues: List[str]
+    litigation_risk: str
+    suggested_actions: List[str]
+    legal_path_notes: List[str]
+    evidence: List[str]
 
 
 class ReasoningTool:
     name = "reasoning_tool"
 
-    def run(self, agent: str, query: str, evidence: List[Dict]) -> Dict:
-        top = evidence[0] if evidence else {"risk_type": "Unknown", "country": "N/A", "advice": "Need more data"}
+    def __init__(self, llm_client: LLMClient):
+        self.llm_client = llm_client
+
+    def run(self, agent: Literal["qa", "layout", "litigation"], query: str, evidence: List[Dict], extra_params: Dict) -> Tuple[Dict, Dict]:
+        schema, prompt = self._build_prompt(agent, query, evidence, extra_params)
+        output = self.llm_client.chat_structured(system_prompt=prompt[0], user_prompt=prompt[1], schema_model=schema)
+        return output, output
+
+    def _build_prompt(self, agent: str, query: str, evidence: List[Dict], extra_params: Dict) -> Tuple[Type[BaseModel], Tuple[str, str]]:
+        evidence_block = json.dumps(evidence, ensure_ascii=False, indent=2)
+        base_system = (
+            "You are an IP expert assistant. Use evidence only; if uncertain, say assumptions. "
+            "Return strict JSON that matches schema."
+        )
         if agent == "qa":
-            return {
-                "risk_type": top.get("risk_type", "Unknown"),
-                "country": top.get("country", "N/A"),
-                "analysis": f"针对问题‘{query}’，主要风险为{top.get('risk_type', 'Unknown')}。",
-                "suggestion": top.get("advice", "补充检索证据后再决策。"),
-            }
+            user = (
+                f"Task: IP risk Q&A\nQuestion: {query}\nExtra: {json.dumps(extra_params, ensure_ascii=False)}\n"
+                f"Evidence:\n{evidence_block}"
+            )
+            return QASchema, (base_system, user)
+
         if agent == "layout":
-            return {
-                "application_type": "PCT + National Phase",
-                "timeline": "0-12个月优先权布局，30个月进入目标国家",
-                "regions": sorted(list({x.get("country", "N/A") for x in evidence})),
-                "strategy": top.get("advice", "先核心专利后外围专利。"),
-            }
-        return {
-            "risk_judgement": "Medium" if evidence else "Unknown",
-            "legal_path": "证据保全 → 律师函回应 → 无效/和解/诉讼",
-            "key_factor": top.get("risk_type", "Unknown"),
-            "recommendation": top.get("advice", "建立诉讼时间线并准备应诉材料。"),
-        }
+            user = (
+                "Task: IP layout planning. Provide filing steps and timeline.\n"
+                f"Technology Input: {query}\nExtra: {json.dumps(extra_params, ensure_ascii=False)}\nEvidence:\n{evidence_block}"
+            )
+            return LayoutSchema, (base_system, user)
+
+        user = (
+            "Task: Litigation analysis. Focus on legal risk and possible response path.\n"
+            f"Case Input: {query}\nExtra: {json.dumps(extra_params, ensure_ascii=False)}\nEvidence:\n{evidence_block}"
+        )
+        return LitigationSchema, (base_system, user)

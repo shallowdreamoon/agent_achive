@@ -1,92 +1,172 @@
-# IPBench-Based Intelligent Agents for Overseas IP Risk Analysis
+# 企业出海知识产权风险多智能体系统（Agent Achive）
 
-一个可交付的“企业出海知识产权风险智能体系统”，覆盖问答、布局规划、诉讼分析三类任务，基于 IPBench 示例数据构建检索增强与评估闭环。
+一个可运行、可展示、可部署、可评估的多智能体 Demo，覆盖：
+- **IP Risk QA Agent**（风险问答）
+- **IP Layout Planning Agent**（专利布局规划）
+- **IP Litigation Analysis Agent**（诉讼分析）
 
-## 1. 项目简介（用于汇报）
+## 核心能力
 
-- **三智能体**：
-  - IP Risk QA Agent（出海风险问答）
-  - IP Layout Planning Agent（海外专利布局）
-  - IP Litigation Analysis Agent（侵权诉讼分析）
-- **数据层**：内置 20 条 IPBench 风格样本，支持 semantic search + task filtering。
-- **调度层**：Router 负责 agent 路由，Tool 层统一 search/reasoning/evaluation 调用。
-- **评估层**：输出 accuracy / reasoning score / task coverage（JSON + 图表）。
-- **展示层**：React + Tailwind Web UI（非 CLI）。
+- 自动/手动路由（返回 `selected_agent` 与 `routing_reason`）
+- 检索增强执行链：`query -> router -> retrieval -> tool use -> llm reasoning -> structured response`
+- OpenAI 兼容 LLM 调用（支持 `OPENAI_BASE_URL`）
+- Embedding 检索 + 本地哈希 embedding 回退（统一接口）
+- 真实 benchmark pipeline（逐 case 调 agent + 自动评分）
+- React + Tailwind 前端，支持结果、证据、benchmark 图表展示
 
-## 2. 系统架构图
+## 架构图
 
-详见 [architecture.md](./architecture.md)，其中含 Mermaid 自动生成图。
+见 [architecture.md](./architecture.md)（含系统图、Agent workflow、Benchmark workflow）。
 
-## 3. 安装方式
+## 目录结构
 
-### 本地开发
+```text
+.
+├── backend/
+│   ├── core/                 # config + llm client
+│   ├── agents/               # 三类 agent
+│   ├── tools/                # search/reasoning/evaluation tools
+│   ├── data/                 # ipbench samples
+│   ├── router/               # auto/manual router
+│   ├── evaluation/           # benchmark runner + dataset
+│   └── main.py               # FastAPI 入口
+├── frontend/                 # React + Vite + Tailwind
+├── data/ipbench_demo.json    # 对外 demo 数据副本
+├── outputs/                  # benchmark 输出
+├── docker/
+├── scripts/generate_artifacts.py
+├── README.md
+└── architecture.md
+```
+
+## 环境变量
+
+后端（默认 real LLM mode，若失败会自动降级；可显式 mock）：
+
+```bash
+OPENAI_API_KEY=sk-xxx
+OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_MODEL=gpt-4o-mini
+EMBEDDING_MODEL=text-embedding-3-small
+MOCK_MODE=false
+ENABLE_REMOTE_EMBEDDING=true
+DEFAULT_TOP_K=4
+```
+
+> `MOCK_MODE=true` 时将强制使用 mock 输出，便于离线演示。
+
+## 本地启动
+
+### 1) Backend
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cd frontend && npm install && cd ..
+uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-## 4. 运行方式
-
-### 方式 A：本地启动
+### 2) Frontend
 
 ```bash
-uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
-# 新开终端
-cd frontend && npm run dev -- --host 0.0.0.0 --port 5173
+cd frontend
+npm install
+npm run dev -- --host 0.0.0.0 --port 5173
 ```
 
 访问：
-- 后端 API: http://localhost:8000/docs
-- 前端 UI: http://localhost:5173
+- API: `http://localhost:8000/docs`
+- UI: `http://localhost:5173`
 
-### 方式 B：Docker 一键启动
+## Docker 启动
 
 ```bash
 docker compose up --build
 ```
 
-## 5. 示例截图（占位）
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:8000`
 
-- UI 占位图：`docs/ui-placeholder.svg`（可替换为真实运行截图）
-- Benchmark 图：`backend/evaluation/benchmark.svg`
+## API 说明
 
-## 6. Benchmark 结果说明
+### `POST /api/run`
+输入：
+```json
+{
+  "query": "收到美国NPE专利警告函，应诉路径是什么？",
+  "agent_type": "litigation",
+  "extra_params": {"country": "US", "top_k": 4}
+}
+```
+输出字段包含：
+- `selected_agent`
+- `routing_reason`
+- `structured_result`
+- `evidence`
+- `raw_model_output`
+- `latency_ms`
 
-执行：
+### `POST /api/benchmark/run`
+运行完整 benchmark，返回：
+- `summary`
+- `detailed_results`
+
+并写入：
+- `outputs/benchmark_results.json`
+- `outputs/benchmark_summary.json`
+
+### `GET /api/health`
+健康检查。
+
+### `GET /api/config`
+返回运行模式、模型名、mock 状态、可用 agents。
+
+## Benchmark 数据与指标
+
+- 数据集：`backend/evaluation/benchmark_dataset.json`（20 条，覆盖 3 类任务）
+- 指标：
+  - `task_coverage`
+  - `evidence_hit_rate`
+  - `structured_output_validity`
+  - `keyword_match_score`
+  - `average_overall_score`
+
+## 前端页面说明
+
+- 首页：Agent 选择、输入区、参数区、运行按钮
+- 输出区：路由信息卡、结构化 JSON 卡、evidence 明细（可展开）
+- Benchmark 面板：运行按钮、指标卡、柱状图、case 结果表
+
+## Artifact 与截图占位
+
+生成命令：
+
 ```bash
-python -m backend.evaluation.run_eval
 python scripts/generate_artifacts.py
 ```
 
-输出：
-- 结果 JSON：`backend/evaluation/results.json`
-- 指标图：`backend/evaluation/benchmark.svg`
+会生成/更新：
+- `docs/ui-placeholder.svg`
+- `docs/benchmark-chart.svg`（依赖 outputs summary）
 
-指标解释：
-- **accuracy**：是否给出带证据的有效回答比例
-- **reasoning score**：结构化推理完整度评分
-- **task coverage**：三类任务覆盖度
+## Mock mode vs Real LLM mode
 
-## 7. 项目结构
+- **Real LLM mode（默认）**：调用 OpenAI 兼容接口进行结构化推理与 embedding
+- **Mock mode**：仅在 `MOCK_MODE=true` 显式启用时强制 mock；适合离线展示
 
-```text
-project_root/
-├── backend/
-│   ├── main.py
-│   ├── agents/
-│   ├── tools/
-│   ├── data/
-│   ├── evaluation/
-│   └── router/
-├── frontend/
-│   ├── src/
-│   └── components/
-├── vector_db/
-├── scripts/
-├── docker/
-├── README.md
-└── architecture.md
+## 示例输出（节选）
+
+```json
+{
+  "selected_agent": "qa",
+  "routing_reason": "defaulted to risk Q&A based on generic question intent",
+  "structured_result": {
+    "question": "...",
+    "risk_type": "Trademark",
+    "country_or_region": "US",
+    "analysis": "...",
+    "recommendations": ["..."],
+    "evidence": ["IPB-001"]
+  }
+}
 ```

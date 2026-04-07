@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   backend:
     build:
@@ -6,8 +5,13 @@ services:
       dockerfile: docker/Dockerfile.backend
     ports:
       - "8000:8000"
-    volumes:
-      - ./vector_db:/app/vector_db
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      MOCK_MODE: ${MOCK_MODE:-true}
+      ENABLE_REMOTE_EMBEDDING: ${ENABLE_REMOTE_EMBEDDING:-false}
+
   frontend:
     build:
       context: .
@@ -15,6 +19,6 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - VITE_API_URL=http://localhost:8000
+      VITE_API_URL: http://backend:8000
     depends_on:
       - backend
