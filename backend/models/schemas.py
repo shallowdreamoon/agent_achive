@@ -55,4 +55,4 @@ class ConfigResponse(BaseModel):
     mock_mode: bool
     model: str
     llm_available: bool
-    available_agents: List[AgentType]
+    available_agents: List[AgentType] = ["qa", "layout", "litigation"]
