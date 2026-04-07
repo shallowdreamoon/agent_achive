@@ -194,3 +194,8 @@ python scripts/verify_delivery.py --start-backend
 - `run_litigation.json`
 - `benchmark_results.json`
 - `benchmark_summary.json`
+
+补充交付检查文件：
+- `frontend_checklist.md`
+- `api_samples.md`
+- `docker_verification.md`

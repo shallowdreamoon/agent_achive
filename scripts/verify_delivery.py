@@ -48,6 +48,13 @@ def wait_for_backend(base_url: str, timeout_seconds: int = 45) -> bool:
     return False
 
 
+def step(name: str, func):
+    try:
+        return func()
+    except Exception as exc:  # noqa: BLE001
+        raise RuntimeError(f"{name} failed: {exc}") from exc
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Verify demo delivery and write runtime evidence files.")
     parser.add_argument("--base-url", default="http://127.0.0.1:8000", help="Backend API base URL.")
@@ -56,24 +63,27 @@ def main() -> int:
 
     base_url = args.base_url.rstrip("/")
     backend_proc: Optional[subprocess.Popen] = None
+    backend_log = OUTPUTS / "backend_start.log"
 
     try:
         if not wait_for_backend(base_url, timeout_seconds=3):
             if not args.start_backend:
-                print("FAIL: backend not reachable (use --start-backend to auto start)")
+                print("FAIL: step=check_backend detail=backend not reachable (use --start-backend to auto start)")
                 return 1
-            backend_proc = subprocess.Popen(
-                [sys.executable, "-m", "uvicorn", "backend.main:app", "--host", "127.0.0.1", "--port", "8000"],
-                cwd=ROOT,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
+            OUTPUTS.mkdir(parents=True, exist_ok=True)
+            with backend_log.open("w", encoding="utf-8") as logf:
+                backend_proc = subprocess.Popen(
+                    [sys.executable, "-m", "uvicorn", "backend.main:app", "--host", "127.0.0.1", "--port", "8000"],
+                    cwd=ROOT,
+                    stdout=logf,
+                    stderr=logf,
+                )
             if not wait_for_backend(base_url, timeout_seconds=45):
-                print("FAIL: backend failed to start")
+                print(f"FAIL: step=start_backend detail=backend failed to start, see {backend_log}")
                 return 1
 
-        write_json("health_check.json", call_json("GET", f"{base_url}/api/health"))
-        write_json("config_check.json", call_json("GET", f"{base_url}/api/config"))
+        step("get_health", lambda: write_json("health_check.json", call_json("GET", f"{base_url}/api/health")))
+        step("get_config", lambda: write_json("config_check.json", call_json("GET", f"{base_url}/api/config")))
 
         run_payloads = {
             "run_qa.json": {
@@ -93,17 +103,14 @@ def main() -> int:
             },
         }
         for filename, payload in run_payloads.items():
-            write_json(filename, call_json("POST", f"{base_url}/api/run", json_payload=payload))
+            step(f"post_{filename}", lambda f=filename, p=payload: write_json(f, call_json("POST", f"{base_url}/api/run", json_payload=p)))
 
-        benchmark = call_json("POST", f"{base_url}/api/benchmark/run", timeout=300)
+        benchmark = step("post_benchmark", lambda: call_json("POST", f"{base_url}/api/benchmark/run", timeout=300))
         write_json("benchmark_summary.json", benchmark["summary"])
         write_json("benchmark_results.json", benchmark["detailed_results"])
 
-        print("PASS: all checks completed")
+        print("PASS")
         return 0
-    except HttpFailure as exc:
-        print(f"FAIL: {exc}")
-        return 1
     except Exception as exc:  # noqa: BLE001
         print(f"FAIL: {exc}")
         return 1

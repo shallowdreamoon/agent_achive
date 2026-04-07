@@ -23,7 +23,7 @@ export default function AgentPanel({ result }) {
 
       <h3 className="mb-2 mt-4 font-semibold">证据</h3>
       <div className="space-y-2">
-        {result.evidence.map((ev) => (
+        {(result.evidence || []).map((ev) => (
           <details key={ev.id} className="rounded border border-slate-200 p-2">
             <summary className="cursor-pointer text-sm font-medium">{ev.id} | {ev.title} (score={ev.score})</summary>
             <p className="mt-2 text-sm text-slate-700">{ev.snippet}</p>

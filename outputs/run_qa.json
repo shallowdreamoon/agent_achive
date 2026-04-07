@@ -1,0 +1,65 @@
+{
+  "selected_agent": "qa",
+  "routing_reason": "manual agent_type specified by user",
+  "structured_result": {
+    "question": "mock-question",
+    "risk_type": "mock-risk_type",
+    "country_or_region": "mock-country_or_region",
+    "analysis": "mock-analysis",
+    "recommendations": [
+      "mock-item"
+    ],
+    "evidence": [
+      "mock-item"
+    ]
+  },
+  "evidence": [
+    {
+      "id": "IPB-001",
+      "task": "qa",
+      "country": "US",
+      "title": "US trademark opposition",
+      "snippet": "A Shenzhen electronics brand plans to sell smart speakers in the US under the mark EchoNova. A prior US registration EchoNova Labs exists in class 9.",
+      "score": 0.3482
+    },
+    {
+      "id": "IPB-004",
+      "task": "qa",
+      "country": "US",
+      "title": "Employee mobility leakage",
+      "snippet": "US subsidiary hired competitors' engineers and imported source snippets from prior employer repositories.",
+      "score": 0.2425
+    },
+    {
+      "id": "IPB-005",
+      "task": "qa",
+      "country": "IN",
+      "title": "Phonetic similarity in India",
+      "snippet": "A healthcare app named MediQ launches in India where Medique is registered for telemedicine services.",
+      "score": 0.1021
+    },
+    {
+      "id": "IPB-002",
+      "task": "qa",
+      "country": "EU",
+      "title": "FRAND and SEP risk in EU",
+      "snippet": "A 5G IoT module exporter enters Germany and France without SEP licensing from major pools.",
+      "score": 0.0
+    }
+  ],
+  "raw_model_output": {
+    "question": "mock-question",
+    "risk_type": "mock-risk_type",
+    "country_or_region": "mock-country_or_region",
+    "analysis": "mock-analysis",
+    "recommendations": [
+      "mock-item"
+    ],
+    "evidence": [
+      "mock-item"
+    ]
+  },
+  "latency_ms": 1,
+  "mock_mode": false,
+  "model_name": "gpt-4o-mini"
+}
