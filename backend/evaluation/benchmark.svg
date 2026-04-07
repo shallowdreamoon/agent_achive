@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="360">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="30" y="35" font-size="20" font-family="Arial" fill="#111827">IPBench Benchmark Metrics</text>
+<line x1="60" y1="280" x2="640" y2="280" stroke="#9ca3af" stroke-width="1"/>
+<rect x="80" y="84.4" width="120" height="195.6" fill="#4f46e5" rx="6"/>
+<text x="140.0" y="76.4" text-anchor="middle" font-size="14" fill="#111827">0.89</text>
+<text x="140.0" y="310" text-anchor="middle" font-size="13" fill="#374151">accuracy</text>
+<rect x="270" y="97.4" width="120" height="182.6" fill="#059669" rx="6"/>
+<text x="330.0" y="89.4" text-anchor="middle" font-size="14" fill="#111827">0.83</text>
+<text x="330.0" y="310" text-anchor="middle" font-size="13" fill="#374151">reasoning_score</text>
+<rect x="460" y="60.0" width="120" height="220.0" fill="#dc2626" rx="6"/>
+<text x="520.0" y="52.0" text-anchor="middle" font-size="14" fill="#111827">1.00</text>
+<text x="520.0" y="310" text-anchor="middle" font-size="13" fill="#374151">task_coverage</text>
+</svg>
