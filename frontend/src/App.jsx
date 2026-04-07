@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import AgentPanel from './components/AgentPanel'
+import EvalPanel from './components/EvalPanel'
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
 
@@ -60,27 +62,8 @@ export default function App() {
 
       {error && <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>}
 
-      {runResult && (
-        <div style={{ border: '1px solid #ccc', padding: 12, marginBottom: 12 }}>
-          <div><b>selected_agent:</b> {runResult.selected_agent}</div>
-          <div><b>routing_reason:</b> {runResult.routing_reason}</div>
-          <div><b>structured_result:</b></div>
-          <pre>{JSON.stringify(runResult.structured_result, null, 2)}</pre>
-          <div><b>evidence:</b></div>
-          <ul>
-            {(runResult.evidence || []).map((item) => (
-              <li key={item.id}>{item.id} - {item.title}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {benchmarkResult && (
-        <div style={{ border: '1px solid #ccc', padding: 12 }}>
-          <div><b>benchmark summary:</b></div>
-          <pre>{JSON.stringify(benchmarkResult.summary, null, 2)}</pre>
-        </div>
-      )}
+      <AgentPanel runResult={runResult} />
+      <EvalPanel benchmarkResult={benchmarkResult} />
     </div>
   )
 }
