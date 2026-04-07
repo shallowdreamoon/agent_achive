@@ -177,23 +177,18 @@ python scripts/generate_artifacts.py
 ## 一键交付验证
 
 ```bash
-python scripts/verify_delivery.py --start-backend
+python scripts/verify_delivery.py
 ```
 
 该脚本会自动调用：
 - `GET /api/health`
 - `GET /api/config`
-- `POST /api/run`（qa/layout/litigation 各一次）
-- `POST /api/benchmark/run`
+- `POST /api/run`（`agent_type=qa`）
 
 并写入 `outputs/`：
 - `health_check.json`
 - `config_check.json`
 - `run_qa.json`
-- `run_layout.json`
-- `run_litigation.json`
-- `benchmark_results.json`
-- `benchmark_summary.json`
 
 补充交付检查文件：
 - `frontend_checklist.md`
