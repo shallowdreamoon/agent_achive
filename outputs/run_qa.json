@@ -31,19 +31,19 @@
       "score": 0.2425
     },
     {
-      "id": "IPB-005",
-      "task": "qa",
-      "country": "IN",
-      "title": "Phonetic similarity in India",
-      "snippet": "A healthcare app named MediQ launches in India where Medique is registered for telemedicine services.",
-      "score": 0.1021
-    },
-    {
       "id": "IPB-002",
       "task": "qa",
       "country": "EU",
       "title": "FRAND and SEP risk in EU",
       "snippet": "A 5G IoT module exporter enters Germany and France without SEP licensing from major pools.",
+      "score": 0.0
+    },
+    {
+      "id": "IPB-003",
+      "task": "qa",
+      "country": "JP",
+      "title": "Software localization copyright",
+      "snippet": "A game studio outsourced Japanese translation and later reused text in another title without explicit assignment.",
       "score": 0.0
     }
   ],
@@ -59,7 +59,7 @@
       "mock-item"
     ]
   },
-  "latency_ms": 1,
+  "latency_ms": 0,
   "mock_mode": false,
   "model_name": "gpt-4o-mini"
 }
