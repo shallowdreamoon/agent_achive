@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540">
+  <rect width="100%" height="100%" fill="#f1f5f9"/>
+  <rect x="40" y="40" width="880" height="460" rx="16" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="70" y="95" font-size="28" fill="#0f172a" font-family="Arial">IPBench Agents UI (Placeholder)</text>
+  <rect x="70" y="120" width="250" height="320" rx="8" fill="#eef2ff"/>
+  <rect x="340" y="120" width="550" height="150" rx="8" fill="#ecfeff"/>
+  <rect x="340" y="290" width="550" height="150" rx="8" fill="#f0fdf4"/>
+</svg>
