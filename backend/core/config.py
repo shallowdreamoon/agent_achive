@@ -12,7 +12,7 @@ class Settings(BaseModel):
     openai_model: str = Field(default="gpt-4o-mini")
     embedding_model: str = Field(default="text-embedding-3-small")
     llm_timeout_seconds: int = Field(default=45)
-    mock_mode: bool = Field(default=False)
+    mock_mode: bool = Field(default=True)
     enable_remote_embedding: bool = Field(default=True)
     default_top_k: int = Field(default=4)
 
@@ -35,7 +35,7 @@ def get_settings() -> Settings:
         openai_model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
         embedding_model=os.getenv("EMBEDDING_MODEL", "text-embedding-3-small"),
         llm_timeout_seconds=int(os.getenv("LLM_TIMEOUT_SECONDS", "45")),
-        mock_mode=_parse_bool(os.getenv("MOCK_MODE"), False),
+        mock_mode=_parse_bool(os.getenv("MOCK_MODE"), True),
         enable_remote_embedding=_parse_bool(os.getenv("ENABLE_REMOTE_EMBEDDING"), True),
         default_top_k=int(os.getenv("DEFAULT_TOP_K", "4")),
         cors_origins=os.getenv("CORS_ORIGINS", "*"),

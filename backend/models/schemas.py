@@ -66,7 +66,5 @@ class BenchmarkResponse(BaseModel):
 
 class ConfigResponse(BaseModel):
     mock_mode: bool
-    model_name: str
-    embedding_model: str
-    available_agents: List[AgentType]
-    default_top_k: int
+    model: str
+    llm_available: bool

@@ -52,10 +52,8 @@ def health():
 def config():
     return ConfigResponse(
         mock_mode=settings.mock_mode,
-        model_name=settings.openai_model,
-        embedding_model=settings.embedding_model,
-        available_agents=settings.available_agents,
-        default_top_k=settings.default_top_k,
+        model=settings.openai_model,
+        llm_available=llm_client.llm_available(),
     )
 
 
