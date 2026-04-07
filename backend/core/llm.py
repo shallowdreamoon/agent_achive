@@ -10,7 +10,7 @@ class LLMClient:
         self.settings = settings
 
     def llm_available(self) -> bool:
-        return False
+        return bool(self.settings.openai_api_key)
 
     def chat_structured(
         self,
@@ -18,12 +18,43 @@ class LLMClient:
         user_prompt: str,
         schema_model: Type[BaseModel],
     ) -> Dict[str, Any]:
-        _ = system_prompt
-        _ = user_prompt
-        return self._mock_response(schema_model)
+        if self.settings.mock_mode:
+            return self._mock_response(schema_model)
+
+        if not self.llm_available():
+            raise RuntimeError("Real LLM mode requires OPENAI_API_KEY, but key is missing.")
+
+        try:
+            from openai import OpenAI
+
+            client = OpenAI(api_key=self.settings.openai_api_key, base_url=self.settings.openai_base_url)
+            completion = client.chat.completions.create(
+                model=self.settings.openai_model,
+                response_format={"type": "json_object"},
+                temperature=0.2,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+                timeout=self.settings.llm_timeout_seconds,
+            )
+            content = completion.choices[0].message.content or "{}"
+            return schema_model.model_validate_json(content).model_dump()
+        except Exception as exc:
+            raise RuntimeError(f"Real LLM call failed: {exc}") from exc
 
     def embed_texts(self, texts: List[str]) -> List[List[float]]:
-        return [self._hash_embedding(text) for text in texts]
+        if self.settings.mock_mode or not self.settings.enable_remote_embedding:
+            return [self._hash_embedding(text) for text in texts]
+
+        try:
+            from openai import OpenAI
+
+            client = OpenAI(api_key=self.settings.openai_api_key, base_url=self.settings.openai_base_url)
+            result = client.embeddings.create(model=self.settings.embedding_model, input=texts)
+            return [item.embedding for item in result.data]
+        except Exception:
+            return [self._hash_embedding(text) for text in texts]
 
     @staticmethod
     def _mock_response(schema_model: Type[BaseModel]) -> Dict[str, Any]:
